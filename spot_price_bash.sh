@@ -35,7 +35,7 @@ while true ; do
 			--output-document="/tmp/${1}.gz"   				   \
 			2> /dev/null
 	sleep 2
-	if [[ "$?" = "0" ]] || ! [[ -f "/tmp/${1}.gz" ]] ; then
+	if [[ "$?" = "0" ]] && [[ -f "/tmp/${1}.gz" ]] ; then
 		AZ="$(gunzip -k -d "/tmp/${1}.gz" -c)"
 		AX="$(column -t -s ',' <<< "${AZ}")"
  		awk "{print ${OUT}}" <<< "${AX}"
