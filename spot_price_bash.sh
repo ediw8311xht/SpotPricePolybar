@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RWAIT="100"
+RWAIT="60"
 OUT='$6'
 
 while 	 [[ "${1}" =~ ^-           ]] ; do
@@ -36,10 +36,12 @@ while true ; do
 			2> /dev/null
 	sleep 2
 	if [[ "$?" = "0" ]] && [[ -f "/tmp/${1}.gz" ]] ; then
-		AZ="$(gunzip -k -d "/tmp/${1}.gz" -c)"
-		AX="$(column -t -s ',' <<< "${AZ}")"
- 		awk "{print ${OUT}}" <<< "${AX}"
-		sleep "${RWAIT}"
+		AX="$(gunzip -k -d "/tmp/${1}.gz" -c | column -t -s ',')"
+		if [[ "$?" = "0" ]] && [[ -n "${AX}" ]]; then
+			echo "${AX}" >> "$HOME/.config/polybar/my_modules/log.txt"
+			awk "{print ${OUT}}" <<< "${AX}"
+			exit 0
+		fi
 	fi
 done
 
