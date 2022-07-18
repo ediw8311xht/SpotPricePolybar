@@ -1,6 +1,5 @@
 #!/bin/bash
 
-RWAIT="60"
 OUT='$6'
 
 while 	 [[ "${1}" =~ ^-           ]] ; do
